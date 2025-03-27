@@ -9,29 +9,32 @@
 </head>
 <body>
     <header>
-        <div class="logo">
-            <h1>Fitness Tracker</h1>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-heartbeat" style="font-size: 24px; color: var(--accent);"></i>
+                <h1>Fitness Tracker</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.php"><i class="fas fa-home"></i> Domů</a></li>
+                    
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <li><a href="index.php?page=dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="index.php?page=exercises"><i class="fas fa-dumbbell"></i> Cvičení</a></li>
+                        <li><a href="index.php?page=goals"><i class="fas fa-trophy"></i> Cíle</a></li>
+                        <li><a href="index.php?page=profile"><i class="fas fa-user"></i> Profil</a></li>
+                        <li><a href="index.php?action=logout"><i class="fas fa-sign-out-alt"></i> Odhlásit se</a></li>
+                    <?php else: ?>
+                        <li><a href="index.php?page=login"><i class="fas fa-sign-in-alt"></i> Přihlásit se</a></li>
+                        <li><a href="index.php?page=register"><i class="fas fa-user-plus"></i> Registrovat se</a></li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
         </div>
-        <nav>
-            <ul>
-                <li><a href="index.php">Domů</a></li>
-                
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <li><a href="index.php?page=dashboard">Dashboard</a></li>
-                    <li><a href="index.php?page=exercises">Cvičení</a></li>
-                    <li><a href="index.php?page=goals">Cíle</a></li>
-                    <li><a href="index.php?page=profile">Profil</a></li>
-                    <li><a href="index.php?action=logout">Odhlásit se</a></li>
-                <?php else: ?>
-                    <li><a href="index.php?page=login">Přihlásit se</a></li>
-                    <li><a href="index.php?page=register">Registrovat se</a></li>
-                <?php endif; ?>
-            </ul>
-        </nav>
     </header>
     
     <main>
         <div class="container">
-            <?php if (isset($pageTitle)): ?>
+            <?php if (isset($pageTitle) && $page !== 'home'): ?>
                 <h2><?php echo $pageTitle; ?></h2>
             <?php endif; ?> 

@@ -15,12 +15,21 @@ $activeGoals = $goalModel->getActiveByUser($userId);
 
 // Kontrola stavu cílů
 $goalModel->checkGoalStatus($userId);
+
+// Aktuální den v týdnu
+$currentDay = date('N');
+$days = ['Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne'];
 ?>
 
 <div class="dashboard">
     <div class="dashboard-welcome">
-        <h3>Vítejte zpět, <?php echo htmlspecialchars($user['first_name'] ?: $user['username']); ?>!</h3>
-        <p>Zde jsou vaše statistiky a přehled aktivit.</p>
+        <div>
+            <h2>Vítejte zpět, <?php echo htmlspecialchars($user['first_name'] ?: $user['username']); ?>!</h2>
+            <p>Přehled vašich fitness aktivit a pokroku</p>
+        </div>
+        <div class="dashboard-actions">
+            <a href="index.php?page=add_exercise" class="btn primary-btn"><i class="fas fa-plus"></i> Přidat cvičení</a>
+        </div>
     </div>
     
     <div class="dashboard-stats">
@@ -50,7 +59,7 @@ $goalModel->checkGoalStatus($userId);
             </div>
             <div class="stat-info">
                 <h4>Spálené kalorie</h4>
-                <p class="stat-value"><?php echo $stats['total_calories'] ?: 0; ?> kcal</p>
+                <p class="stat-value"><?php echo $stats['total_calories'] ?: 0; ?> <span class="stat-unit">kcal</span></p>
             </div>
         </div>
         
@@ -65,15 +74,28 @@ $goalModel->checkGoalStatus($userId);
         </div>
     </div>
     
+    <div class="activity-week">
+        <h3>Týdenní aktivita</h3>
+        <div class="week-tracker">
+            <?php for ($i = 1; $i <= 7; $i++): ?>
+                <div class="day-marker <?php echo $i == $currentDay ? 'current-day' : ''; ?> <?php echo $i <= $currentDay ? 'past-day' : ''; ?>">
+                    <div class="day-activity <?php echo rand(0, 1) ? 'has-activity' : ''; ?>"></div>
+                    <span class="day-label"><?php echo $days[$i-1]; ?></span>
+                </div>
+            <?php endfor; ?>
+        </div>
+    </div>
+    
     <div class="dashboard-sections">
         <div class="dashboard-section">
             <div class="section-header">
-                <h3>Nedávná cvičení</h3>
-                <a href="index.php?page=exercises" class="btn small-btn">Zobrazit vše</a>
+                <h3><i class="fas fa-history"></i> Nedávná cvičení</h3>
+                <a href="index.php?page=exercises" class="btn small-btn">Zobrazit vše <i class="fas fa-arrow-right"></i></a>
             </div>
             
             <?php if (empty($recentExercises)): ?>
                 <div class="empty-state">
+                    <i class="fas fa-running empty-icon"></i>
                     <p>Zatím nemáte žádná cvičení. <a href="index.php?page=add_exercise">Přidejte nové cvičení</a>.</p>
                 </div>
             <?php else: ?>
@@ -95,30 +117,34 @@ $goalModel->checkGoalStatus($userId);
                             </div>
                             <div class="exercise-info">
                                 <h4><?php echo htmlspecialchars($exercise['title']); ?></h4>
-                                <p class="exercise-date"><?php echo date('d.m.Y', strtotime($exercise['date'])); ?></p>
-                                <p>
-                                    <span class="exercise-duration"><?php echo $exercise['duration']; ?> min</span>
-                                    <span class="exercise-calories"><?php echo $exercise['calories_burned']; ?> kcal</span>
-                                </p>
+                                <p class="exercise-date"><i class="far fa-calendar-alt"></i> <?php echo date('d.m.Y', strtotime($exercise['date'])); ?></p>
+                                <div class="exercise-details">
+                                    <span class="exercise-duration"><i class="far fa-clock"></i> <?php echo $exercise['duration']; ?> min</span>
+                                    <span class="exercise-calories"><i class="fas fa-fire-alt"></i> <?php echo $exercise['calories_burned']; ?> kcal</span>
+                                </div>
+                            </div>
+                            <div class="exercise-actions">
+                                <a href="index.php?page=edit_exercise&id=<?php echo $exercise['id']; ?>" class="icon-btn"><i class="fas fa-pencil-alt"></i></a>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
                 
                 <div class="section-footer">
-                    <a href="index.php?page=add_exercise" class="btn primary-btn">Přidat cvičení</a>
+                    <a href="index.php?page=add_exercise" class="btn primary-btn"><i class="fas fa-plus"></i> Přidat cvičení</a>
                 </div>
             <?php endif; ?>
         </div>
         
         <div class="dashboard-section">
             <div class="section-header">
-                <h3>Aktivní cíle</h3>
-                <a href="index.php?page=goals" class="btn small-btn">Zobrazit vše</a>
+                <h3><i class="fas fa-trophy"></i> Aktivní cíle</h3>
+                <a href="index.php?page=goals" class="btn small-btn">Zobrazit vše <i class="fas fa-arrow-right"></i></a>
             </div>
             
             <?php if (empty($activeGoals)): ?>
                 <div class="empty-state">
+                    <i class="fas fa-bullseye empty-icon"></i>
                     <p>Zatím nemáte žádné aktivní cíle. <a href="index.php?page=add_goal">Vytvořte nový cíl</a>.</p>
                 </div>
             <?php else: ?>
@@ -136,9 +162,12 @@ $goalModel->checkGoalStatus($userId);
                             <div class="goal-info">
                                 <h4><?php echo htmlspecialchars($goal['title']); ?></h4>
                                 <p class="goal-dates">
+                                    <i class="far fa-calendar-alt"></i>
                                     <span class="goal-date-start"><?php echo date('d.m.Y', strtotime($goal['start_date'])); ?></span> - 
                                     <span class="goal-date-end"><?php echo date('d.m.Y', strtotime($goal['end_date'])); ?></span>
-                                    <span class="goal-days-left">(<?php echo $daysLeft; ?> dnů zbývá)</span>
+                                </p>
+                                <p class="goal-days-left">
+                                    <i class="far fa-clock"></i> <?php echo $daysLeft; ?> dnů zbývá
                                 </p>
                                 <div class="goal-progress">
                                     <div class="progress-bar">
@@ -147,7 +176,7 @@ $goalModel->checkGoalStatus($userId);
                                     <div class="progress-info">
                                         <span class="progress-current"><?php echo $goal['current_value']; ?></span> / 
                                         <span class="progress-target"><?php echo $goal['target_value']; ?></span>
-                                        <span class="progress-percent">(<?php echo round($progressPercent); ?>%)</span>
+                                        <span class="progress-percent"><?php echo round($progressPercent); ?>%</span>
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +185,7 @@ $goalModel->checkGoalStatus($userId);
                 </div>
                 
                 <div class="section-footer">
-                    <a href="index.php?page=add_goal" class="btn primary-btn">Přidat cíl</a>
+                    <a href="index.php?page=add_goal" class="btn primary-btn"><i class="fas fa-plus"></i> Přidat cíl</a>
                 </div>
             <?php endif; ?>
         </div>

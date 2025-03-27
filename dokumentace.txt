@@ -1,0 +1,74 @@
+Fitness Tracker Database Documentation
+Úvodní stránka
+Tato dokumentace popisuje databázovou strukturu a funkce webové aplikace Fitness Tracker, která slouží k sledování cvičení a fitness cílů uživatelů.
+Obsah
+Úvod
+Anotace
+Schéma databáze (E-R model)
+Tabulky popisných atributů
+Skript pro tvorbu databáze
+Skript pro úpravu struktury databáze
+Skript pro vložení dat do databáze
+Skript pro aktualizaci dat v databázi
+Skript pro smazání dat z databáze
+Použitá literatura
+Anotace
+Tato aplikace umožňuje uživatelům sledovat jejich cvičební aktivity, nastavovat si fitness cíle a sledovat svůj pokrok. Aplikace je vytvořena jako školní projekt pro předmět WEA. V databázi jsou uloženy informace o uživatelích, jejich cvičeních a cílech.
+Schéma databáze (E-R model)
+(Zde vložte E-R diagram, který znázorňuje vztahy mezi tabulkami users, exercises a goals.)
+Tabulky popisných atributů
+Tabulka: users
+| Atribut | Typ | Popis |
+|------------------|--------------|--------------------------------|
+| id | INT | Primární klíč, automaticky inkrementováno |
+| username | VARCHAR(50) | Uživatelské jméno, unikátní |
+| email | VARCHAR(100) | Email, unikátní |
+| password | VARCHAR(255) | Heslo (hash) |
+| first_name | VARCHAR(50) | Křestní jméno |
+| last_name | VARCHAR(50) | Příjmení |
+| height | DECIMAL(5,2) | Výška v cm |
+| weight | DECIMAL(5,2) | Hmotnost v kg |
+| date_of_birth | DATE | Datum narození |
+| profile_image | VARCHAR(255) | Cesta k profilovému obrázku |
+| created_at | TIMESTAMP | Datum a čas vytvoření |
+| updated_at | TIMESTAMP | Datum a čas poslední aktualizace|
+Tabulka: exercises
+| Atribut | Typ | Popis |
+|------------------|--------------|--------------------------------|
+| id | INT | Primární klíč, automaticky inkrementováno |
+| user_id | INT | Cizí klíč, odkaz na uživatele |
+| title | VARCHAR(100) | Název cvičení |
+| description | TEXT | Popis cvičení |
+| exercise_type | ENUM | Typ cvičení (cardio, strength, flexibility, balance, other) |
+| duration | INT | Doba trvání v minutách |
+| calories_burned | INT | Spálené kalorie |
+| date | DATE | Datum cvičení |
+| created_at | TIMESTAMP | Datum a čas vytvoření |
+| updated_at | TIMESTAMP | Datum a čas poslední aktualizace|
+Tabulka: goals
+| Atribut | Typ | Popis |
+|------------------|--------------|--------------------------------|
+| id | INT | Primární klíč, automaticky inkrementováno |
+| user_id | INT | Cizí klíč, odkaz na uživatele |
+| title | VARCHAR(100) | Název cíle |
+| description | TEXT | Popis cíle |
+| goal_type | ENUM | Typ cíle (weight, exercise_frequency, duration, distance, other) |
+| target_value | DECIMAL(10,2)| Cílová hodnota |
+| current_value | DECIMAL(10,2)| Aktuální hodnota |
+| start_date | DATE | Datum začátku |
+| end_date | DATE | Datum konce |
+| status | ENUM | Stav cíle (active, completed, failed, cancelled) |
+| created_at | TIMESTAMP | Datum a čas vytvoření |
+| updated_at | TIMESTAMP | Datum a čas poslední aktualizace|
+Skript pro tvorbu databáze
+(Zde vložte SQL skript pro vytvoření databáze, který již máte v database.sql.)
+Skript pro úpravu struktury databáze
+(Zde vložte SQL skripty pro úpravy struktury databáze, jako je přidání sloupců, změny, odstranění, atd.)
+Skript pro vložení dat do databáze
+(Zde vložte SQL skripty pro vložení dat do tabulek, které již máte v database.sql.)
+Skript pro aktualizaci dat v databázi
+(Zde vložte SQL skripty pro aktualizaci dat v tabulkách.)
+Skript pro smazání dat z databáze
+(Zde vložte SQL skripty pro smazání dat z tabulek.)
+Použitá literatura
+(Zde uveďte literaturu a zdroje, které jste použili při vytváření této aplikace a databáze.)
