@@ -10,6 +10,7 @@
 }
 
 :root {
+    /* Light mode variables */
     --primary: #5e60ce;
     --primary-dark: #4d4fc1;
     --secondary: #64dfdf;
@@ -27,6 +28,37 @@
     --radius-lg: 24px;
     --transition: all 0.3s ease;
     --font-main: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+    /* Dark mode variables */
+    --dark-primary: #6e70de;
+    --dark-primary-dark: #5e60ce;
+    --dark-secondary: #56cfcf;
+    --dark-accent: #ff6b97;
+    --dark-text-dark: #e7e9f5;
+    --dark-text-light: #b8bacc;
+    --dark-text-lighter: #9395a6;
+    --dark-bg-light: #1a1c2e;
+    --dark-bg-white: #252738;
+    --dark-bg-card: #2e3047;
+    --dark-border: #3c3f58;
+    --dark-shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.2);
+    --dark-shadow-md: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Dark mode class */
+body.dark-mode {
+    --primary: var(--dark-primary);
+    --primary-dark: var(--dark-primary-dark);
+    --secondary: var(--dark-secondary);
+    --accent: var(--dark-accent);
+    --text-dark: var(--dark-text-dark);
+    --text-light: var(--dark-text-light);
+    --text-lighter: var(--dark-text-lighter);
+    --bg-light: var(--dark-bg-light);
+    --bg-white: var(--dark-bg-white);
+    --bg-card: var(--dark-bg-card);
+    --shadow-sm: var(--dark-shadow-sm);
+    --shadow-md: var(--dark-shadow-md);
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -1037,6 +1069,13 @@ footer {
         margin: 5px;
     }
     
+    /* Ensure dark mode toggle is visible on mobile */
+    .mode-toggle-wrapper {
+        margin: 10px auto;
+        display: flex;
+        justify-content: center;
+    }
+    
     .dashboard-stats, .dashboard-sections {
         grid-template-columns: 1fr;
     }
@@ -1186,4 +1225,55 @@ footer {
     padding: 30px;
     width: 100%;
     max-width: 800px;
+}
+
+/* Dark mode toggle button */
+.theme-toggle {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: var(--primary);
+    cursor: pointer;
+    overflow: hidden;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+}
+
+.theme-toggle i {
+    color: white;
+    font-size: 14px;
+    z-index: 1;
+}
+
+.theme-toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: white;
+    transition: var(--transition);
+}
+
+body.dark-mode .theme-toggle::after {
+    left: calc(100% - 27px);
+}
+
+/* Extra class to ensure visibility */
+.theme-toggle-visible {
+    box-shadow: 0 0 8px rgba(94, 96, 206, 0.5);
+    border: 2px solid var(--bg-white);
+}
+
+/* Mode toggle in navbar */
+.mode-toggle-wrapper {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
 } 

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="public/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body>
+<body class="<?php echo isset($_COOKIE['dark_mode']) && $_COOKIE['dark_mode'] === 'true' ? 'dark-mode' : ''; ?>">
     <header>
         <div class="container">
             <div class="logo">
@@ -28,6 +28,12 @@
                         <li><a href="index.php?page=login"><i class="fas fa-sign-in-alt"></i> Přihlásit se</a></li>
                         <li><a href="index.php?page=register"><i class="fas fa-user-plus"></i> Registrovat se</a></li>
                     <?php endif; ?>
+                    <li class="mode-toggle-wrapper">
+                        <div id="themeToggle" class="theme-toggle theme-toggle-visible">
+                            <i class="fas fa-sun"></i>
+                            <i class="fas fa-moon"></i>
+                        </div>
+                    </li>
                 </ul>
             </nav>
         </div>

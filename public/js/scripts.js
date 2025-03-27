@@ -1,5 +1,7 @@
 // Funkce pro inicializaci aplikace
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded - initializing app functions');
+    
     // Inicializace datepickeru pro formuláře s datem
     initDatePickers();
     
@@ -8,6 +10,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Inicializace tlačítek pro odstranění
     initDeleteButtons();
+    
+    // Inicializace přepínače tmavého režimu
+    initDarkModeToggle();
+    
+    // Záložní inicializace po malém zpoždění pro případ, že by první inicializace selhala
+    setTimeout(function() {
+        console.log('Running backup initialization for dark mode toggle');
+        initDarkModeToggle();
+    }, 500);
+    
+    console.log('All initialization functions called');
 });
 
 // Inicializace datepickeru pro formuláře s datem
@@ -146,4 +159,37 @@ function updateGoalValue(goalId, currentValue, targetValue) {
         progressBar.style.width = `${percent}%`;
         progressPercent.textContent = `(${Math.round(percent)}%)`;
     }
+}
+
+// Inicializace přepínače tmavého režimu
+function initDarkModeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    
+    if (themeToggle) {
+        console.log('Dark mode toggle found and initialized');
+        themeToggle.addEventListener('click', function() {
+            // Přepnutí třídy dark-mode na těle dokumentu
+            document.body.classList.toggle('dark-mode');
+            
+            // Uložení preference pomocí cookies
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            setDarkModeCookie(isDarkMode);
+            console.log('Dark mode toggled: ' + (isDarkMode ? 'ON' : 'OFF'));
+        });
+    } else {
+        console.warn('Dark mode toggle element not found!');
+    }
+}
+
+// Nastavení cookie pro tmavý režim
+function setDarkModeCookie(isDarkMode) {
+    // Nastavení cookie s platností 365 dní
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 365);
+    
+    // Vytvoření cookie řetězce
+    const cookieString = `dark_mode=${isDarkMode}; expires=${expirationDate.toUTCString()}; path=/; SameSite=Lax`;
+    
+    // Nastavení cookie
+    document.cookie = cookieString;
 } 
